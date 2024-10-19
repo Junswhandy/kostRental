@@ -43,6 +43,8 @@ Route::get('/', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
+
+
 // Routes for each role
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
