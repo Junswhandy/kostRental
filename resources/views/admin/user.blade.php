@@ -19,7 +19,7 @@
 </head>
 <body class="flex min-h-screen">
     <!-- Sidebar -->
-    <div class="w-64">
+    <div class="w-auto">
         @include('admin.template.sidebar')
     </div>
 
@@ -35,7 +35,7 @@
         <table id="users-table" class="min-w-full bg-white border border-gray-300">
             <thead>
                 <tr>
-                    <th class="border px-4 py-2">ID</th>
+                    <th class="border px-4 py-2">No</th>
                     <th class="border px-4 py-2">Nama</th>
                     <th class="border px-4 py-2">Email</th>
                     <th class="border px-4 py-2">Level</th>
@@ -49,7 +49,8 @@
             <tbody>
                 @foreach ($users as $user)
                 <tr>
-                    <td class="border px-4 py-2">{{ $user->id }}</td>
+                    {{-- <td class="border px-4 py-2">{{ $user->id }}</td> --}}
+                    <td class="border px-4 py-2">{{ $loop->iteration }}</td> 
                     <td class="border px-4 py-2">{{ $user->name }}</td>
                     <td class="border px-4 py-2">{{ $user->email }}</td>
                     <td class="border px-4 py-2">{{ ucfirst($user->level) }}</td>
