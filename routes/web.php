@@ -5,47 +5,52 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KostController;
+use App\Http\Controllers\UserController;
+
+// Home Controller
+use App\Http\Controllers\HomeController;
+
+// Route untuk halaman awal
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Login Routes
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-    ->name('login');
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login')
+    ->middleware('guest'); // Hanya dapat diakses oleh pengguna tamu
+
+Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/');
 })->name('logout');
 
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
 // Register Routes
 Route::get('register', [RegisteredUserController::class, 'create'])
-    ->name('register');
+    ->name('register')
+    ->middleware('guest'); // Hanya dapat diakses oleh pengguna tamu
 
 Route::post('register', [RegisteredUserController::class, 'store']);
 
 // Password Reset Routes
 Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-    ->name('password.request');
+    ->name('password.request')
+    ->middleware('guest');
 
 Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->name('password.email');
+    ->name('password.email')
+    ->middleware('guest');
 
 Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-    ->name('password.reset');
+    ->name('password.reset')
+    ->middleware('guest');
 
 Route::post('reset-password', [NewPasswordController::class, 'store'])
-    ->name('password.update');
-
+    ->name('password.update')
+    ->middleware('guest');
 
 // Dashboard Routes
-Route::get('/', function () {
-    return view('index');
-})->middleware(['auth'])->name('dashboard');
-
-
-
-
-// Routes for each role
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
         return view('admin.dashboard'); // Tampilan dashboard Admin
@@ -59,3 +64,22 @@ Route::middleware(['auth'])->group(function () {
         return view('owner.dashboard'); // Tampilan dashboard Pemilik
     })->middleware('role:owner')->name('owner.dashboard');
 });
+
+
+// admin role
+Route::get('/admin/kost', [KostController::class, 'index'])->name('admin.kost');
+Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user');
+
+// Route untuk menampilkan form edit user
+Route::get('/admin/user/{id}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
+
+// Route untuk update data user
+Route::put('/admin/user/{id}', [UserController::class, 'update'])->name('admin.user.update');
+
+// Route untuk hapus user
+Route::delete('/admin/user/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
+
+Route::get('/admin/user/create', [UserController::class, 'create'])->name('admin.user.create');
+// untuk simpan data
+Route::post('/admin/user', [UserController::class, 'store'])->name('admin.user.store');
+

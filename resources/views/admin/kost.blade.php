@@ -15,7 +15,7 @@
         <!-- Dashboard content -->
         <div class="flex-1 p-4 text-black bg-white">
             <!-- Konten dashboard lainnya -->
-            <h1 class="text-2xl font-bold">Welcome to the Dashboard</h1>
+            <h1 class="text-2xl font-bold">Welcome to Halaman Kost</h1>
             <!-- Tambahkan konten dashboard lainnya di sini -->
         </div>
     </div>
